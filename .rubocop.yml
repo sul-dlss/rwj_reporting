@@ -2,4 +2,8 @@ inherit_gem:
   dlss_cops: "config/dlss_baseline.yml"
 
 AllCops:
-  TargetRubyVersion: 1.8.7  # libstream box only has ruby 1.8.7
+  TargetRubyVersion: 2.2
+
+Lint/HandleExceptions:
+  Exclude:
+    - 'Rakefile'
