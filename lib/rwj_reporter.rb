@@ -1,4 +1,5 @@
 class RwjReporter
+  LOG_FILE_DIR = 'spec/fixtures/'
 
   # expects a text file with xml that contains something like:
   #  <body>1,1,21,unlimited,-1,, - Show Number 062<br />1,1,21,unlimited,-1,, - Show Number 196a<br /></body>
@@ -33,11 +34,15 @@ class RwjReporter
     end
   end
 
-  # TODO:  not done
-  def something(start_date, end_date)
-    get_filenames_for_date_range(log_file_dir, start_date_str, end_date_str).each { |fname|  
-      add_shownums_to_channel_counts = get_show_numbers_from_log_file(fname)
+  def channel_counts(start_date_str, end_date_str)
+    self.class.get_filenames_for_date_range(LOG_FILE_DIR, start_date_str, end_date_str).each { |fname|  
+      add_shownums_to_channel_counts(self.class.get_show_numbers_from_log_file(File.join(LOG_FILE_DIR, fname)))
     }
+  end
+
+  def print_channel_counts
+    print_channel_counts(channel1_counts)
+    print_channel_counts(channel2_counts)
   end
 
   private

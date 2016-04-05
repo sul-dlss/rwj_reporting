@@ -36,7 +36,7 @@ describe 'RwjReporter' do
     end
   end
 
-  context '.add_shownums_to_channel_counts' do
+  context '#add_shownums_to_channel_counts' do
     it 'increments the counts for show numbers for each channel' do
       rr = RwjReporter.new
       rr.send(:add_shownums_to_channel_counts, ['152a', '001b'])
@@ -44,6 +44,15 @@ describe 'RwjReporter' do
       expect(rr.send(:channel1_counts)['152a']).to eq(1)
       expect(rr.send(:channel2_counts)['001b']).to eq(2)
       expect(rr.send(:channel1_counts)['153a']).to eq(1)
+    end
+  end
+
+  context '#channel_counts' do
+    it 'gets the right channel counts for a set of log files in the given date range' do
+      rr = RwjReporter.new
+      rr.channel_counts('160228', '160303')
+      expect(rr.send(:channel1_counts)).to include("115b"=>1, "019a"=>1, "260"=>1, "101"=>1, "350"=>1, "336"=>1)
+      expect(rr.send(:channel2_counts)).to include("140"=>1, "118"=>1, "348"=>1, "250"=>1)
     end
   end
 end
