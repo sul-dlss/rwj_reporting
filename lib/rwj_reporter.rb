@@ -1,4 +1,10 @@
 class RwjReporter
+  def self.print_reports_for_dates(start_date_str, end_date_str, log_file_dir=nil, output_dir=nil)
+    rr = RwjReporter.new(log_file_dir)
+    rr.channel_counts(start_date_str, end_date_str)
+    rr.print_channel_counts_files(output_dir)
+  end
+
   def initialize(log_file_dir=nil)
     @log_file_dir = if log_file_dir
       log_file_dir

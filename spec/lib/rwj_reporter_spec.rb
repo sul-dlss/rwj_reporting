@@ -58,9 +58,7 @@ describe 'RwjReporter' do
 
   context '#print_channel_counts_files' do
     before(:context) {
-      rr = RwjReporter.new 'spec/fixtures/'
-      rr.channel_counts('160228', '160303')
-      rr.print_channel_counts_files '.'
+      RwjReporter.print_reports_for_dates('160228', '160303', 'spec/fixtures/', '.')
     }
     let (:channel1_data_array) { File.open('160228-160303_channel_1_usage_counts.csv').readlines } 
     let (:channel2_data_array) { File.open('160228-160303_channel_2_usage_counts.csv').readlines } 
