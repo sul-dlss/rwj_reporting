@@ -55,4 +55,24 @@ describe 'RwjReporter' do
       expect(rr.send(:channel2_counts)).to include("140"=>1, "118"=>1, "348"=>1, "250"=>1)
     end
   end
+
+  context '#print_channel_counts_files' do
+    before(:context) {
+      rr = RwjReporter.new
+      rr.channel_counts('160228', '160303')
+      rr.print_channel_counts_files
+    }
+    let (:channel1_data_array) { File.open('160228-160303_channel_1_usage_counts.csv').readlines } 
+    let (:channel2_data_array) { File.open('160228-160303_channel_2_usage_counts.csv').readlines } 
+    it 'each channel file is sorted by show number' do
+      expect(channel1_data_array).to eq channel1_data_array.sort
+      expect(channel2_data_array).to eq channel2_data_array.sort
+    end
+    it 'file contains lines of show number comma count' do
+      line = channel1_data_array.first
+      shownum, count = line.split(',')
+      expect(shownum).to match(/^\d{3}[a-z]?$/)
+      expect(count.to_i).to be >= 1
+    end
+  end
 end
