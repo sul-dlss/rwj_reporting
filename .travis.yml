@@ -4,4 +4,5 @@ notifications:
   email: false
 
 rvm:
+  - 2.2.2 # libstream VM has 2.2.2
   - 2.2.3
