@@ -12,4 +12,15 @@ class RwjReporter
     log_file_content = open(fname).read
     log_file_content.scan(/Show Number (\w+)</).flatten
   end
+
+  def self.get_filenames_for_date_range(log_file_dir, start_date_str, end_date_str)
+    return Dir.entries(log_file_dir).select { |fname| get_date_str_from_filename(fname) >= start_date_str && get_date_str_from_filename(fname) <= end_date_str }
+  end
+
+  private
+  def self.get_date_str_from_filename(fname)
+    fname_date_regex = /\.(\d{6})\-/
+    return '' unless fname.match(fname_date_regex)
+    return fname.match(fname_date_regex)[1]
+  end
 end
