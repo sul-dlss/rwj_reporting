@@ -17,10 +17,41 @@ class RwjReporter
     return Dir.entries(log_file_dir).select { |fname| get_date_str_from_filename(fname) >= start_date_str && get_date_str_from_filename(fname) <= end_date_str }
   end
 
-  private
+  # the following class methods can be considered private
+
   def self.get_date_str_from_filename(fname)
     fname_date_regex = /\.(\d{6})\-/
     return '' unless fname.match(fname_date_regex)
     return fname.match(fname_date_regex)[1]
+  end
+
+  def self.add_shownum_to_channel_count(channel_count_hash, shownum)
+    channel_count_hash[shownum] = if channel_count_hash.key? shownum
+      channel_count_hash[shownum] + 1
+    else
+      1
+    end
+  end
+
+  # TODO:  not done
+  def something(start_date, end_date)
+    get_filenames_for_date_range(log_file_dir, start_date_str, end_date_str).each { |fname|  
+      add_shownums_to_channel_counts = get_show_numbers_from_log_file(fname)
+    }
+  end
+
+  private
+
+  def add_shownums_to_channel_counts(shownum_array)
+    self.class.add_shownum_to_channel_count(channel1_counts, shownum_array.first)
+    self.class.add_shownum_to_channel_count(channel2_counts, shownum_array.last)
+  end
+
+  def channel1_counts
+    @channel1_counts ||= {}
+  end
+
+  def channel2_counts
+    @channel2_counts ||= {}
   end
 end
