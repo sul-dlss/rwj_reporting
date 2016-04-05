@@ -27,12 +27,12 @@ describe 'RwjReporter' do
     it 'adds new key with value 1 when shownum not already present' do
       existing_hash = {}
       RwjReporter.add_shownum_to_channel_count(existing_hash, '055')
-      expect(existing_hash).to eq({'055' => 1})
+      expect(existing_hash).to eq('055' => 1)
     end
     it 'increments counter value when shownum is present' do
-      existing_hash = {'666' => 2}
+      existing_hash = { '666' => 2 }
       RwjReporter.add_shownum_to_channel_count(existing_hash, '666')
-      expect(existing_hash).to eq({'666' => 3})
+      expect(existing_hash).to eq('666' => 3)
     end
   end
 
@@ -51,17 +51,17 @@ describe 'RwjReporter' do
     it 'gets the right channel counts for a set of log files in the given date range' do
       rr = RwjReporter.new 'spec/fixtures/'
       rr.channel_counts('160228', '160303')
-      expect(rr.send(:channel1_counts)).to include("115b"=>1, "019a"=>1, "260"=>1, "101"=>1, "350"=>1, "336"=>1)
-      expect(rr.send(:channel2_counts)).to include("140"=>1, "118"=>1, "348"=>1, "250"=>1)
+      expect(rr.send(:channel1_counts)).to include("115b" => 1, "019a" => 1, "260" => 1, "101" => 1, "350" => 1, "336" => 1)
+      expect(rr.send(:channel2_counts)).to include("140" => 1, "118" => 1, "348" => 1, "250" => 1)
     end
   end
 
   context '#print_channel_counts_files' do
-    before(:context) {
+    before(:context) do
       RwjReporter.print_reports_for_dates('160228', '160303', 'spec/fixtures/', '.')
-    }
-    let (:channel1_data_array) { File.open('160228-160303_channel_1_usage_counts.csv').readlines } 
-    let (:channel2_data_array) { File.open('160228-160303_channel_2_usage_counts.csv').readlines } 
+    end
+    let(:channel1_data_array) { File.open('160228-160303_channel_1_usage_counts.csv').readlines }
+    let(:channel2_data_array) { File.open('160228-160303_channel_2_usage_counts.csv').readlines }
     it 'each channel file is sorted by show number' do
       expect(channel1_data_array).to eq channel1_data_array.sort
       expect(channel2_data_array).to eq channel2_data_array.sort
@@ -74,7 +74,7 @@ describe 'RwjReporter' do
     end
   end
 
-  it 'should load the default config file' do
-    expect(RwjReporter.get_log_file_dir_from_settings).to eq '.'
+  it 'loads the default config file' do
+    expect(RwjReporter.log_file_dir_from_settings).to eq '.'
   end
 end

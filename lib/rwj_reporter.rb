@@ -6,14 +6,15 @@ class RwjReporter
   end
 
   def initialize(log_file_dir=nil)
-    @log_file_dir = if log_file_dir
-      log_file_dir
-    else
-      get_log_file_dir_from_settings
-    end
+    @log_file_dir =
+      if log_file_dir
+        log_file_dir
+      else
+        log_file_dir_from_settings
+      end
   end
 
-  def self.get_log_file_dir_from_settings
+  def self.log_file_dir_from_settings
     settings = YAML.load_file 'config/settings.yml'
     settings['LOG_FILE_DIR']
   end
@@ -32,7 +33,9 @@ class RwjReporter
   end
 
   def self.get_filenames_for_date_range(log_file_dir, start_date_str, end_date_str)
-    return Dir.entries(log_file_dir).select { |fname| get_date_str_from_filename(fname) >= start_date_str && get_date_str_from_filename(fname) <= end_date_str }
+    Dir.entries(log_file_dir).select do |fname|
+      get_date_str_from_filename(fname) >= start_date_str && get_date_str_from_filename(fname) <= end_date_str
+    end
   end
 
   # the following class methods can be considered private
@@ -40,23 +43,24 @@ class RwjReporter
   def self.get_date_str_from_filename(fname)
     fname_date_regex = /\.(\d{6})\-/
     return '' unless fname.match(fname_date_regex)
-    return fname.match(fname_date_regex)[1]
+    fname.match(fname_date_regex)[1]
   end
 
   def self.add_shownum_to_channel_count(channel_count_hash, shownum)
-    channel_count_hash[shownum] = if channel_count_hash.key? shownum
-      channel_count_hash[shownum] + 1
-    else
-      1
-    end
+    channel_count_hash[shownum] =
+      if channel_count_hash.key? shownum
+        channel_count_hash[shownum] + 1
+      else
+        1
+      end
   end
 
   def channel_counts(start_date_str, end_date_str)
     @start_date_str = start_date_str
     @end_date_str = end_date_str
-    self.class.get_filenames_for_date_range(@log_file_dir, start_date_str, end_date_str).each { |fname|  
+    self.class.get_filenames_for_date_range(@log_file_dir, start_date_str, end_date_str).each do |fname|
       add_shownums_to_channel_counts(self.class.get_show_numbers_from_log_file(File.join(@log_file_dir, fname)))
-    }
+    end
   end
 
   def print_channel_counts_files(output_dir=nil)
@@ -70,7 +74,7 @@ class RwjReporter
 
   private
 
-  def add_shownums_to_channel_counts(shownum_array)
+  def add_shownums_to_channel_counts(shownum_array) # rubocop:disable Style/IndentationWidth
     self.class.add_shownum_to_channel_count(channel1_counts, shownum_array.first)
     self.class.add_shownum_to_channel_count(channel2_counts, shownum_array.last)
   end
