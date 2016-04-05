@@ -1,5 +1,16 @@
 class RwjReporter
-  LOG_FILE_DIR = 'spec/fixtures/'
+  def initialize(log_file_dir=nil)
+    @log_file_dir = if log_file_dir
+      log_file_dir
+    else
+      get_log_file_dir_from_settings
+    end
+  end
+
+  def self.get_log_file_dir_from_settings
+    settings = YAML.load_file 'config/settings.yml'
+    settings['LOG_FILE_DIR']
+  end
 
   # expects a text file with xml that contains something like:
   #  <body>1,1,21,unlimited,-1,, - Show Number 062<br />1,1,21,unlimited,-1,, - Show Number 196a<br /></body>
@@ -37,14 +48,14 @@ class RwjReporter
   def channel_counts(start_date_str, end_date_str)
     @start_date_str = start_date_str
     @end_date_str = end_date_str
-    self.class.get_filenames_for_date_range(LOG_FILE_DIR, start_date_str, end_date_str).each { |fname|  
-      add_shownums_to_channel_counts(self.class.get_show_numbers_from_log_file(File.join(LOG_FILE_DIR, fname)))
+    self.class.get_filenames_for_date_range(@log_file_dir, start_date_str, end_date_str).each { |fname|  
+      add_shownums_to_channel_counts(self.class.get_show_numbers_from_log_file(File.join(@log_file_dir, fname)))
     }
   end
 
-  def print_channel_counts_files
-    File.write(file_name(1), channel1_counts.sort.map { |count_pair| count_pair.join(',') }.join("\n"))
-    File.write(file_name(2), channel2_counts.sort.map { |count_pair| count_pair.join(',') }.join("\n"))
+  def print_channel_counts_files(output_dir=nil)
+    File.write(File.join(output_dir, file_name(1)), channel1_counts.sort.map { |count_pair| count_pair.join(',') }.join("\n"))
+    File.write(File.join(output_dir, file_name(2)), channel2_counts.sort.map { |count_pair| count_pair.join(',') }.join("\n"))
   end
 
   def file_name(channel_num)

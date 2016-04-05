@@ -38,7 +38,7 @@ describe 'RwjReporter' do
 
   context '#add_shownums_to_channel_counts' do
     it 'increments the counts for show numbers for each channel' do
-      rr = RwjReporter.new
+      rr = RwjReporter.new 'spec/fixtures/'
       rr.send(:add_shownums_to_channel_counts, ['152a', '001b'])
       rr.send(:add_shownums_to_channel_counts, ['153a', '001b'])
       expect(rr.send(:channel1_counts)['152a']).to eq(1)
@@ -49,7 +49,7 @@ describe 'RwjReporter' do
 
   context '#channel_counts' do
     it 'gets the right channel counts for a set of log files in the given date range' do
-      rr = RwjReporter.new
+      rr = RwjReporter.new 'spec/fixtures/'
       rr.channel_counts('160228', '160303')
       expect(rr.send(:channel1_counts)).to include("115b"=>1, "019a"=>1, "260"=>1, "101"=>1, "350"=>1, "336"=>1)
       expect(rr.send(:channel2_counts)).to include("140"=>1, "118"=>1, "348"=>1, "250"=>1)
@@ -58,9 +58,9 @@ describe 'RwjReporter' do
 
   context '#print_channel_counts_files' do
     before(:context) {
-      rr = RwjReporter.new
+      rr = RwjReporter.new 'spec/fixtures/'
       rr.channel_counts('160228', '160303')
-      rr.print_channel_counts_files
+      rr.print_channel_counts_files '.'
     }
     let (:channel1_data_array) { File.open('160228-160303_channel_1_usage_counts.csv').readlines } 
     let (:channel2_data_array) { File.open('160228-160303_channel_2_usage_counts.csv').readlines } 
@@ -74,5 +74,9 @@ describe 'RwjReporter' do
       expect(shownum).to match(/^\d{3}[a-z]?$/)
       expect(count.to_i).to be >= 1
     end
+  end
+
+  it 'should load the default config file' do
+    expect(RwjReporter.get_log_file_dir_from_settings).to eq '.'
   end
 end
