@@ -1,20 +1,12 @@
 class RwjReporter
   def self.print_reports_for_dates(start_date_str, end_date_str, log_file_dir=nil, output_dir=nil)
     rr = RwjReporter.new(start_date_str, end_date_str, log_file_dir)
-    rr.channel_counts
-    rr.print_channel_counts_files(output_dir)
+    rr.print_reports_for_dates(output_dir)
   end
 
-  def initialize(start_date_str, end_date_str, log_file_dir=nil)
-    @log_file_dir =
-      if log_file_dir
-        log_file_dir
-      else
-        log_file_dir_from_settings
-      end
-    @start_date_str = start_date_str
-    @end_date_str = end_date_str
-  end
+  # the following class methods can be considered private
+  # TODO:  these may be better as private instance methods even though they don't
+  #   rely on any instance data
 
   def self.log_file_dir_from_settings
     settings = YAML.load_file 'config/settings.yml'
@@ -45,8 +37,6 @@ class RwjReporter
     end
   end
 
-  # the following class methods can be considered private
-
   def self.get_date_str_from_filename(fname)
     fname_date_regex = /\.(\d{6})\-/
     return '' unless fname.match(fname_date_regex)
@@ -64,6 +54,17 @@ class RwjReporter
 
   # instance methods
 
+  def initialize(start_date_str, end_date_str, log_file_dir=nil)
+    @log_file_dir =
+      if log_file_dir
+        log_file_dir
+      else
+        log_file_dir_from_settings
+      end
+    @start_date_str = start_date_str
+    @end_date_str = end_date_str
+  end
+
   def print_reports_for_dates(output_dir=nil)
     my_output_dir =
       if output_dir
@@ -77,18 +78,18 @@ class RwjReporter
     print_channel_counts_files(my_output_dir)
   end
 
-  def channel_counts
-    self.class.get_filenames_for_date_range(@log_file_dir, @start_date_str, @end_date_str).each do |fname|
-      add_shownums_to_channel_counts(self.class.get_show_numbers_from_log_file(File.join(@log_file_dir, fname)))
-    end
-  end
-
-  def print_channel_counts_files(output_dir=nil)
-    File.write(File.join(output_dir, file_name(1)), channel1_counts.sort.map { |count_pair| count_pair.join(',') }.join("\n"))
-    File.write(File.join(output_dir, file_name(2)), channel2_counts.sort.map { |count_pair| count_pair.join(',') }.join("\n"))
-  end
-
   private
+
+    def channel_counts
+      self.class.get_filenames_for_date_range(@log_file_dir, @start_date_str, @end_date_str).each do |fname|
+        add_shownums_to_channel_counts(self.class.get_show_numbers_from_log_file(File.join(@log_file_dir, fname)))
+      end
+    end
+
+    def print_channel_counts_files(output_dir=nil)
+      File.write(File.join(output_dir, file_name(1)), channel1_counts.sort.map { |count_pair| count_pair.join(',') }.join("\n"))
+      File.write(File.join(output_dir, file_name(2)), channel2_counts.sort.map { |count_pair| count_pair.join(',') }.join("\n"))
+    end
 
     def add_shownums_to_channel_counts(shownum_array)
       self.class.add_shownum_to_channel_count(channel1_counts, shownum_array.first)
