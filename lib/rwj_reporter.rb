@@ -16,7 +16,7 @@ class RwjReporter
 
   def self.log_file_dir_from_settings
     settings = YAML.load_file 'config/settings.yml'
-    settings['LOG_FILE_DIR']
+    settings['log_file_dir']
   end
 
   # expects a text file with xml that contains something like:
