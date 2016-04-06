@@ -21,6 +21,11 @@ class RwjReporter
     settings['log_file_dir']
   end
 
+  def self.output_dir_from_settings
+    settings = YAML.load_file 'config/settings.yml'
+    settings['output_dir']
+  end
+
   # expects a text file with xml that contains something like:
   #  <body>1,1,21,unlimited,-1,, - Show Number 062<br />1,1,21,unlimited,-1,, - Show Number 196a<br /></body>
   #
@@ -58,6 +63,19 @@ class RwjReporter
   end
 
   # instance methods
+
+  def print_reports_for_dates(output_dir=nil)
+    my_output_dir =
+      if output_dir
+        output_dir
+      else
+        self.class.output_dir_from_settings
+      end
+    require 'fileutils'
+    FileUtils.makedirs(my_output_dir) unless Dir.exist?(my_output_dir)
+    channel_counts
+    print_channel_counts_files(my_output_dir)
+  end
 
   def channel_counts
     self.class.get_filenames_for_date_range(@log_file_dir, @start_date_str, @end_date_str).each do |fname|
