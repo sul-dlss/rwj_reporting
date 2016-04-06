@@ -1,17 +1,19 @@
 class RwjReporter
   def self.print_reports_for_dates(start_date_str, end_date_str, log_file_dir=nil, output_dir=nil)
-    rr = RwjReporter.new(log_file_dir)
-    rr.channel_counts(start_date_str, end_date_str)
+    rr = RwjReporter.new(start_date_str, end_date_str, log_file_dir)
+    rr.channel_counts
     rr.print_channel_counts_files(output_dir)
   end
 
-  def initialize(log_file_dir=nil)
+  def initialize(start_date_str, end_date_str, log_file_dir=nil)
     @log_file_dir =
       if log_file_dir
         log_file_dir
       else
         log_file_dir_from_settings
       end
+    @start_date_str = start_date_str
+    @end_date_str = end_date_str
   end
 
   def self.log_file_dir_from_settings
@@ -55,10 +57,10 @@ class RwjReporter
       end
   end
 
-  def channel_counts(start_date_str, end_date_str)
-    @start_date_str = start_date_str
-    @end_date_str = end_date_str
-    self.class.get_filenames_for_date_range(@log_file_dir, start_date_str, end_date_str).each do |fname|
+  # instance methods
+
+  def channel_counts
+    self.class.get_filenames_for_date_range(@log_file_dir, @start_date_str, @end_date_str).each do |fname|
       add_shownums_to_channel_counts(self.class.get_show_numbers_from_log_file(File.join(@log_file_dir, fname)))
     end
   end
@@ -68,22 +70,22 @@ class RwjReporter
     File.write(File.join(output_dir, file_name(2)), channel2_counts.sort.map { |count_pair| count_pair.join(',') }.join("\n"))
   end
 
-  def file_name(channel_num)
-    "#{@start_date_str}-#{@end_date_str}_channel_#{channel_num}_usage_counts.csv"
-  end
-
   private
 
-  def add_shownums_to_channel_counts(shownum_array) # rubocop:disable Style/IndentationWidth
-    self.class.add_shownum_to_channel_count(channel1_counts, shownum_array.first)
-    self.class.add_shownum_to_channel_count(channel2_counts, shownum_array.last)
-  end
+    def add_shownums_to_channel_counts(shownum_array)
+      self.class.add_shownum_to_channel_count(channel1_counts, shownum_array.first)
+      self.class.add_shownum_to_channel_count(channel2_counts, shownum_array.last)
+    end
 
-  def channel1_counts
-    @channel1_counts ||= {}
-  end
+    def channel1_counts
+      @channel1_counts ||= {}
+    end
 
-  def channel2_counts
-    @channel2_counts ||= {}
-  end
+    def channel2_counts
+      @channel2_counts ||= {}
+    end
+
+    def file_name(channel_num)
+      "#{@start_date_str}-#{@end_date_str}_channel_#{channel_num}_usage_counts.csv"
+    end
 end

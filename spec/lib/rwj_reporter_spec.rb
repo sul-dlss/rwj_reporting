@@ -1,16 +1,18 @@
 require 'rwj_reporter'
 
 describe 'RwjReporter' do
+  FIXTURE_DIR = 'spec/fixtures'.freeze
+
   context '.get_show_numbers_from_log_file' do
     it 'returns an array of 2 show numbers' do
-      fname = 'spec/fixtures/streamguys.160201- 101.log'
+      fname = "#{FIXTURE_DIR}/streamguys.160201- 101.log"
       expect(RwjReporter.get_show_numbers_from_log_file(fname)).to eq ['062', '196a']
     end
   end
 
   context '.get_files_for_date_range' do
     let(:filename_list) do
-      log_file_dir = 'spec/fixtures/'
+      log_file_dir = FIXTURE_DIR
       start_date_str = '160228' # 2/28/2016
       end_date_str = '160303' # 3/3/2016
       RwjReporter.get_filenames_for_date_range(log_file_dir, start_date_str, end_date_str)
@@ -38,7 +40,7 @@ describe 'RwjReporter' do
 
   context '#add_shownums_to_channel_counts' do
     it 'increments the counts for show numbers for each channel' do
-      rr = RwjReporter.new 'spec/fixtures/'
+      rr = RwjReporter.new('start_date', 'end_date', 'log_dir')
       rr.send(:add_shownums_to_channel_counts, ['152a', '001b'])
       rr.send(:add_shownums_to_channel_counts, ['153a', '001b'])
       expect(rr.send(:channel1_counts)['152a']).to eq(1)
@@ -49,8 +51,8 @@ describe 'RwjReporter' do
 
   context '#channel_counts' do
     it 'gets the right channel counts for a set of log files in the given date range' do
-      rr = RwjReporter.new 'spec/fixtures/'
-      rr.channel_counts('160228', '160303')
+      rr = RwjReporter.new('160228', '160303', FIXTURE_DIR)
+      rr.channel_counts
       expect(rr.send(:channel1_counts)).to include("115b" => 1, "019a" => 1, "260" => 1, "101" => 1, "350" => 1, "336" => 1)
       expect(rr.send(:channel2_counts)).to include("140" => 1, "118" => 1, "348" => 1, "250" => 1)
     end
@@ -58,7 +60,7 @@ describe 'RwjReporter' do
 
   context '#print_channel_counts_files' do
     before(:context) do
-      RwjReporter.print_reports_for_dates('160228', '160303', 'spec/fixtures/', '.')
+      RwjReporter.print_reports_for_dates('160228', '160303', FIXTURE_DIR, '.')
     end
     let(:channel1_data_array) { File.open('160228-160303_channel_1_usage_counts.csv').readlines }
     let(:channel2_data_array) { File.open('160228-160303_channel_2_usage_counts.csv').readlines }
