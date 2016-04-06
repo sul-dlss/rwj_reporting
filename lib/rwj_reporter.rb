@@ -1,3 +1,4 @@
+
 class RwjReporter
   def self.print_reports_for_dates(start_date_str, end_date_str, log_file_dir=nil, output_dir=nil)
     rr = RwjReporter.new(start_date_str, end_date_str, log_file_dir)
@@ -9,11 +10,13 @@ class RwjReporter
   #   rely on any instance data
 
   def self.log_file_dir_from_settings
+    require 'yaml'
     settings = YAML.load_file 'config/settings.yml'
     settings['log_file_dir']
   end
 
   def self.output_dir_from_settings
+    require 'yaml'
     settings = YAML.load_file 'config/settings.yml'
     settings['output_dir']
   end
@@ -59,7 +62,7 @@ class RwjReporter
       if log_file_dir
         log_file_dir
       else
-        log_file_dir_from_settings
+        self.class.log_file_dir_from_settings
       end
     @start_date_str = start_date_str
     @end_date_str = end_date_str
