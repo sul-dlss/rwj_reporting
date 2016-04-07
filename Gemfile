@@ -10,3 +10,9 @@ group :development, :test do
   gem 'rspec'
 #  gem 'rspec-expectations'
 end
+
+group :deployment do
+  gem 'capistrano', '~> 3.0'
+  gem 'capistrano-bundler'
+  gem 'dlss-capistrano'
+end
