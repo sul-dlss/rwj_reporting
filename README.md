@@ -8,3 +8,16 @@ As of Jan 2016, the SoundExchange reporting requirements for SUL related to our 
 This script will gather that usage data from the hourly logs that are created and stored on media@libstream.stanford.edu/var/log/ezstream/.
 
 Inputs to the script would reflect the reporting time period.
+
+# Usage
+
+1. log in to libstream box as media user
+2. `cd rwj_reporting/current`  (end up in `home/media/rwj_reporting/current`)
+3. `rake reports[160301,160331]`
+ * the dates given are yymmdd format
+ * the dates are inclusive
+ * the square brackets and comma are required
+4.  reports are written to the `home/media` directory as, e.g. `160301-160331_channel_1_usage_counts.csv` and `160301-160331_channel_2_usage_counts.csv`.   
+ * You can change the directory where the reports are written by changing `home/media/rwj_reporting/shared/config/settings.yml`  output_dir
+
+Log files are expected to be in `/var/log/ezstream`.  This directory is also configurable in `home/media/rwj_reporting/shared/config/settings.yml`
