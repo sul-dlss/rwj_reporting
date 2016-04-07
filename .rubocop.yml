@@ -7,3 +7,6 @@ AllCops:
 Lint/HandleExceptions:
   Exclude:
     - 'Rakefile'
+
+Metrics/LineLength:
+  Max: 140
