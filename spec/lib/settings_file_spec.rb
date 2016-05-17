@@ -12,4 +12,10 @@ describe SettingsFile do
       expect(subject.output_dir).to eq 'tmp'
     end
   end
+
+  describe '#track_list_location' do
+    it 'is configured' do
+      expect(subject.track_list_location).to eq 'data/track-template.csv'
+    end
+  end
 end

@@ -17,6 +17,10 @@ class SettingsFile
     settings_file['output_dir']
   end
 
+  def track_list_location
+    settings_file['track_list']
+  end
+
   private
 
     attr_reader :file_path
