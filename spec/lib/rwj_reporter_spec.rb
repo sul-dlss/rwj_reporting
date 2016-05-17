@@ -102,7 +102,7 @@ describe 'RwjReporter' do
 
     context '#print_channel_counts_files' do
       before(:context) do
-        RwjReporter.print_reports_for_dates('160228', '160303', FIXTURE_DIR, OUTPUT_DIR)
+        RwjReporter.new('160228', '160303', FIXTURE_DIR).print_reports_for_dates
       end
       let(:channel1_data_array) { File.open(File.join(OUTPUT_DIR, '160228-160303_channel_1_usage_counts.csv')).readlines }
       let(:channel2_data_array) { File.open(File.join(OUTPUT_DIR, '160228-160303_channel_2_usage_counts.csv')).readlines }

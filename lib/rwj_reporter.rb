@@ -1,10 +1,5 @@
 
 class RwjReporter
-  def self.print_reports_for_dates(start_date_str, end_date_str, log_file_dir=nil, output_dir=nil)
-    rr = RwjReporter.new(start_date_str, end_date_str, log_file_dir)
-    rr.print_reports_for_dates(output_dir)
-  end
-
   # the following class methods can be considered private
   # TODO:  these may be better as private instance methods even though they don't
   #   rely on any instance data
