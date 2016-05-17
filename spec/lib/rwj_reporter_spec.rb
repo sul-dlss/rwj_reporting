@@ -1,5 +1,3 @@
-require 'rwj_reporter'
-
 describe 'RwjReporter' do
   FIXTURE_DIR = 'spec/fixtures'.freeze
   OUTPUT_DIR = 'tmp'.freeze
@@ -42,9 +40,6 @@ describe 'RwjReporter' do
   it 'can get log_file_dir from the default config file' do
     expect(RwjReporter.log_file_dir_from_settings).to eq '.'
   end
-  it 'can get output_dir from the default config file' do
-    expect(RwjReporter.output_dir_from_settings).to eq 'tmp'
-  end
 
   context '#print_reports_for_dates' do
     let(:rr) { RwjReporter.new('160301', '160303', FIXTURE_DIR) }
@@ -67,15 +62,6 @@ describe 'RwjReporter' do
         expect(shownum).to match(/^\d{3}[a-z]?$/)
         expect(count.to_i).to be >= 1
       end
-    end
-    it 'takes output_dir from args if there is one' do
-      my_dir = File.join(OUTPUT_DIR, 'testdir')
-      rr.print_reports_for_dates(my_dir)
-      output_array = File.open(File.join(my_dir, "#{fname_pfx}1_usage_counts.csv")).readlines
-      line = output_array.first
-      shownum, count = line.split(',')
-      expect(shownum).to match(/^\d{3}[a-z]?$/)
-      expect(count.to_i).to be >= 1
     end
   end
 
