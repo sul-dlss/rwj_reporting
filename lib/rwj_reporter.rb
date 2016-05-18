@@ -1,5 +1,6 @@
 require 'settings_file'
 require 'simple_csv_printer'
+require 'track_merged_csv_printer'
 
 class RwjReporter
   # the following class methods can be considered private
@@ -48,7 +49,7 @@ class RwjReporter
 
   # instance methods
 
-  def initialize(start_date_str, end_date_str, log_file_dir=nil, printer_class = SimpleCSVPrinter)
+  def initialize(start_date_str, end_date_str, log_file_dir=nil, printer_class = TrackMergedCSVPrinter)
     @log_file_dir =
       if log_file_dir
         log_file_dir

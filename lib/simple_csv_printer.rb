@@ -2,7 +2,9 @@ require 'csv'
 require 'fileutils'
 
 ###
-# A class to write show nubmers and counts to a CSV file
+# A class to write show nubmers and counts to a CSV file.
+# This is not currently being used by RWJReporter and has
+# been replaced by a different CSVPrinter class.
 class SimpleCSVPrinter
   def initialize(show_counts, file_name, config = SettingsFile.new)
     @show_counts = show_counts

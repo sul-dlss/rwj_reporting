@@ -50,17 +50,13 @@ describe 'RwjReporter' do
       it 'takes output_dir from settings if no param' do
         # covered by other tests, as print_report_for_dates is called w/o arg
       end
-      it 'each channel file is sorted by show number' do
-        rr.print_reports_for_dates
-        expect(channel1_output_array).to eq channel1_output_array.sort
-        expect(channel2_output_array).to eq channel2_output_array.sort
-      end
       it 'file contains lines of show number comma count' do
         rr.print_reports_for_dates
         line = channel1_output_array.first
-        shownum, count = line.split(',')
-        expect(shownum).to match(/^\d{3}[a-z]?$/)
-        expect(count.to_i).to be >= 1
+        shownum, tracknum, count = line.split(',')
+        expect(shownum).to match(/^\d{1,3}[a-z]?$/)
+        expect(tracknum).to match(/^\d{1,2}?$/)
+        expect(count).to match(/^\d{1}/)
       end
     end
   end
@@ -92,15 +88,12 @@ describe 'RwjReporter' do
       end
       let(:channel1_data_array) { File.open(File.join(OUTPUT_DIR, '160228-160303_channel_1_usage_counts.csv')).readlines }
       let(:channel2_data_array) { File.open(File.join(OUTPUT_DIR, '160228-160303_channel_2_usage_counts.csv')).readlines }
-      it 'each channel file is sorted by show number' do
-        expect(channel1_data_array).to eq channel1_data_array.sort
-        expect(channel2_data_array).to eq channel2_data_array.sort
-      end
       it 'file contains lines of show number comma count' do
         line = channel1_data_array.first
-        shownum, count = line.split(',')
-        expect(shownum).to match(/^\d{3}[a-z]?$/)
-        expect(count.to_i).to be >= 1
+        shownum, tracknum, count = line.split(',')
+        expect(shownum).to match(/^\d{1,3}[a-z]?$/)
+        expect(tracknum).to match(/^\d{1,2}?$/)
+        expect(count).to match(/^\d{1}/)
       end
     end
   end
