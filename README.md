@@ -21,3 +21,5 @@ Inputs to the script would reflect the reporting time period.
  * You can change the directory where the reports are written by changing `home/media/rwj_reporting/shared/config/settings.yml`  output_dir
 
 Log files are expected to be in `/var/log/ezstream`.  This directory is also configurable in `home/media/rwj_reporting/shared/config/settings.yml`
+
+The template of the master tracking spreadsheet is held in this codebase under the `/data` directory. This file is configurable in `home/media/rwj_reporting/shared/config/settings.yml`

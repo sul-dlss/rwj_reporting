@@ -1,10 +1,8 @@
+require 'settings_file'
+require 'simple_csv_printer'
+require 'track_merged_csv_printer'
 
 class RwjReporter
-  def self.print_reports_for_dates(start_date_str, end_date_str, log_file_dir=nil, output_dir=nil)
-    rr = RwjReporter.new(start_date_str, end_date_str, log_file_dir)
-    rr.print_reports_for_dates(output_dir)
-  end
-
   # the following class methods can be considered private
   # TODO:  these may be better as private instance methods even though they don't
   #   rely on any instance data
@@ -13,12 +11,6 @@ class RwjReporter
     require 'yaml'
     settings = YAML.load_file 'config/settings.yml'
     settings['log_file_dir']
-  end
-
-  def self.output_dir_from_settings
-    require 'yaml'
-    settings = YAML.load_file 'config/settings.yml'
-    settings['output_dir']
   end
 
   # expects a text file with xml that contains something like:
@@ -57,7 +49,7 @@ class RwjReporter
 
   # instance methods
 
-  def initialize(start_date_str, end_date_str, log_file_dir=nil)
+  def initialize(start_date_str, end_date_str, log_file_dir=nil, printer_class = TrackMergedCSVPrinter)
     @log_file_dir =
       if log_file_dir
         log_file_dir
@@ -66,22 +58,17 @@ class RwjReporter
       end
     @start_date_str = start_date_str
     @end_date_str = end_date_str
+    @printer_class = printer_class
   end
 
-  def print_reports_for_dates(output_dir=nil)
-    my_output_dir =
-      if output_dir
-        output_dir
-      else
-        self.class.output_dir_from_settings
-      end
-    require 'fileutils'
-    FileUtils.makedirs(my_output_dir) unless Dir.exist?(my_output_dir)
+  def print_reports_for_dates
     channel_counts
-    print_channel_counts_files(my_output_dir)
+    print_channel_counts_files
   end
 
   private
+
+    attr_reader :printer_class
 
     def channel_counts
       self.class.get_filenames_for_date_range(@log_file_dir, @start_date_str, @end_date_str).each do |fname|
@@ -89,9 +76,9 @@ class RwjReporter
       end
     end
 
-    def print_channel_counts_files(output_dir=nil)
-      File.write(File.join(output_dir, file_name(1)), channel1_counts.sort.map { |count_pair| count_pair.join(',') }.join("\n"))
-      File.write(File.join(output_dir, file_name(2)), channel2_counts.sort.map { |count_pair| count_pair.join(',') }.join("\n"))
+    def print_channel_counts_files
+      printer_class.new(channel1_counts, file_name(1)).print
+      printer_class.new(channel2_counts, file_name(2)).print
     end
 
     def add_shownums_to_channel_counts(shownum_array)

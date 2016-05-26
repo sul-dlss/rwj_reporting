@@ -1,6 +1,7 @@
 require 'coveralls'
 Coveralls.wear!('rails')
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+require 'rwj_reporter'
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
     # This option will default to `true` in RSpec 4. It makes the `description`
