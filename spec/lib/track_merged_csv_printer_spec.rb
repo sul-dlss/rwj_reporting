@@ -102,4 +102,11 @@ describe TrackMergedCSVPrinter do
       expect(subject.send(:normalized_show_number, 'abc414def')).to eq '414'
     end
   end
+
+  describe '#normalized_show_counts' do
+    let(:show_counts) { { nil => 1, '123' => 4 } }
+    it 'excludes show counts without a show number' do
+      expect(subject.send(:normalized_show_counts)).to eq('123' => 4)
+    end
+  end
 end
