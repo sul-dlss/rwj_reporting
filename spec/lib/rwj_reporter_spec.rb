@@ -20,6 +20,11 @@ describe 'RwjReporter' do
       fname = "#{FIXTURE_DIR}/streamguys.160201- 101.log"
       expect(RwjReporter.get_show_numbers_from_log_file(fname)).to eq ['062', '196a']
     end
+
+    it 'handles show numbers formatted as "show123a" as well as "Show Number 123a"' do
+      fname = "#{FIXTURE_DIR}/streamguys.160303-1101.log"
+      expect(RwjReporter.get_show_numbers_from_log_file(fname)).to eq ['181a', '101']
+    end
   end
 
   context '.get_filenames_for_date_range' do

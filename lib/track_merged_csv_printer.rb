@@ -38,8 +38,9 @@ class TrackMergedCSVPrinter
     # This returns a modified hash that normalizes the shownumber key.
     def normalized_show_counts
       @normalized_show_counts ||= show_counts.map do |shownum, count|
+        next if shownum.nil?
         [normalized_show_number(shownum), count]
-      end.to_h
+      end.compact.to_h
     end
 
     def create_output_directory
