@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rake'
+gem 'rake', '~> 11.3.0'
 
 # Coveralls gem for code coverage reporting
 gem 'coveralls', require: false
