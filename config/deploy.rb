@@ -1,9 +1,6 @@
-# config valid only for current version of Capistrano
-lock '3.4.0'
-
 set :application, 'rwj_reporting'
 set :repo_url, 'https://github.com/sul-dlss/rwj_reporting.git'
-set :user, 'media'
+set :deploy_to, '/home/media/rwj_reporting'
 
 # Default branch is :master
 ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
