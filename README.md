@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.org/sul-dlss/rwj_reporting.svg?branch=master)](https://travis-ci.org/sul-dlss/rwj_reporting) | [![Coverage Status](https://coveralls.io/repos/sul-dlss/rwj_reporting/badge.svg)](https://coveralls.io/r/sul-dlss/rwj_reporting) |
-[![Dependency Status](https://gemnasium.com/sul-dlss/rwj_reporting.svg)](https://gemnasium.com/sul-dlss/rwj_reporting) | [![Code Climate](https://codeclimate.com/github/sul-dlss/rwj_reporting/badges/gpa.svg)](https://codeclimate.com/github/sul-dlss/rwj_reporting)
+[![Build Status](https://travis-ci.org/sul-dlss/rwj_reporting.svg?branch=master)](https://travis-ci.org/sul-dlss/rwj_reporting) | [![Coverage Status](https://coveralls.io/repos/sul-dlss/rwj_reporting/badge.svg)](https://coveralls.io/r/sul-dlss/rwj_reporting) | [![Code Climate](https://codeclimate.com/github/sul-dlss/rwj_reporting/badges/gpa.svg)](https://codeclimate.com/github/sul-dlss/rwj_reporting)
 
 # Script to get usage counts from logs for Riverwalk Jazz.  
 
