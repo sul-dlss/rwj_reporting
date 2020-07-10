@@ -1,8 +1,13 @@
+dist: xenial
+
 sudo: false
 
 notifications:
   email: false
 
 rvm:
-  - 2.2.2 # libstream VM has 2.2.2
-  - 2.2.3
+  - 2.3.0 # (2.2 is on the server)
+  - 2.7.1
+
+before_install:
+  - gem install bundler:1.15.4
