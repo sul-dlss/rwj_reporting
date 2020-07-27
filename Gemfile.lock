@@ -50,7 +50,7 @@ GEM
       ast (~> 2.4.1)
     powerpack (0.1.2)
     rainbow (3.0.0)
-    rake (11.3.0)
+    rake (13.0.1)
     rspec (3.9.0)
       rspec-core (~> 3.9.0)
       rspec-expectations (~> 3.9.0)
@@ -100,7 +100,7 @@ DEPENDENCIES
   dlss-capistrano
   dlss_cops
   honeybadger
-  rake (~> 11.3.0)
+  rake
   rspec
 
 BUNDLED WITH
